@@ -1,3 +1,8 @@
+$font-main: 'Montserrat', 'Poppins', 'Segoe UI', Arial, sans-serif;
+
+.identification-container, .identification-form, .form-header, .form-group, .submit-btn {
+	font-family: $font-main;
+}
 
 $bg-1: #181b20;
 $bg-2: #23262b;
@@ -13,22 +18,74 @@ $white: #f3f4f6;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(120deg, $bg-2 0%, $bg-1 100%);
+	position: relative;
+	overflow: hidden;
+	background: linear-gradient(120deg, rgba($bg-2, 0.95) 0%, rgba($bg-1, 0.98) 100%);
 	animation: fadeSlideIn 0.8s cubic-bezier(.7,0,.3,1);
+}
+
+.identification-bg {
+	position: absolute;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	object-fit: cover;
+	z-index: 0;
+	filter: blur(10px) brightness(0.45) grayscale(0.2);
+	pointer-events: none;
+	transition: filter 0.5s;
 }
 
 .identification-form {
 	background: rgba($masc1, 0.98);
 	border-radius: 1.2em;
-	box-shadow: 0 4px 32px 0 rgba(0,0,0,.13);
-	padding: 2.2em 2em 1.6em 2em;
+	box-shadow: 0 8px 40px 0 rgba(0,0,0,.22);
+	padding: 2.6em 2.4em 2.2em 2.4em;
 	min-width: 320px;
 	max-width: 94vw;
 	display: flex;
 	flex-direction: column;
-	gap: 1.3em;
+	gap: 1.7em;
 	align-items: stretch;
 	animation: formPop 1.1s cubic-bezier(.7,0,.3,1);
+	position: relative;
+	overflow: hidden;
+	z-index: 1;
+	backdrop-filter: blur(2px) saturate(1.1);
+}
+
+.form-header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.2em;
+	margin-bottom: 0.5em;
+}
+.form-header .icon-barber {
+	font-size: 2.2em;
+	margin-bottom: 0.1em;
+	animation: iconPop 0.7s cubic-bezier(.7,0,.3,1), iconPulse 2.2s 1.2s infinite alternate cubic-bezier(.7,0,.3,1);
+	filter: drop-shadow(0 2px 8px rgba(0,0,0,.18));
+}
+@keyframes iconPulse {
+	0% { transform: scale(1) rotate(-2deg); }
+	50% { transform: scale(1.13) rotate(2deg); }
+	100% { transform: scale(1) rotate(-2deg); }
+}
+/* Responsividade */
+@media (max-width: 600px) {
+	.identification-bg {
+		filter: blur(7px) brightness(0.38) grayscale(0.2);
+	}
+}
+.form-header .subtitle {
+	color: $accent2;
+	font-size: 1em;
+	font-weight: 500;
+	margin: 0.1em 0 0.2em 0;
+	text-align: center;
+	letter-spacing: .04em;
+	opacity: 0.85;
 }
 
 .identification-form h2 {
@@ -43,7 +100,14 @@ $white: #f3f4f6;
 .form-group {
 	display: flex;
 	flex-direction: column;
-	gap: 0.3em;
+	gap: 0.7em;
+	opacity: 0;
+	transform: translateY(24px);
+	animation: fadeUpField 0.7s cubic-bezier(.7,0,.3,1) forwards;
+}
+.form-group.animated {
+	opacity: 1;
+	transform: none;
 }
 
 .form-group label {
@@ -63,11 +127,13 @@ $white: #f3f4f6;
 	font-size: 1.08em;
 	font-weight: 500;
 	outline: none;
-	transition: border 0.18s, box-shadow 0.18s;
+	transition: border 0.18s, box-shadow 0.18s, background 0.18s;
+	box-shadow: 0 1px 6px 0 rgba(0,0,0,.08);
 }
-.form-group input:focus {
+.form-group input:focus, .form-group input.filled {
 	border: 1.5px solid $accent;
 	box-shadow: 0 0 0 2px rgba($accent, 0.13);
+	background: $masc3;
 }
 
 .submit-btn {
@@ -86,6 +152,18 @@ $white: #f3f4f6;
 	opacity: 0.98;
 	user-select: none;
 	align-self: center;
+	display: flex;
+	align-items: center;
+	gap: 0.7em;
+	justify-content: center;
+	letter-spacing: .04em;
+	animation: fadeUpField 0.7s cubic-bezier(.7,0,.3,1) forwards;
+}
+.submit-btn .arrow {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.1em;
+	transition: transform 0.18s;
 }
 .submit-btn:disabled {
 	opacity: 0.5;
@@ -96,6 +174,49 @@ $white: #f3f4f6;
 	box-shadow: 0 4px 18px 0 rgba(0,0,0,.18);
 	background: linear-gradient(90deg, $accent 40%, $accent2 100%);
 	opacity: 1;
+}
+.submit-btn:hover .arrow, .submit-btn:focus .arrow {
+	transform: translateX(4px) scale(1.1);
+}
+
+/* Animations */
+@keyframes iconPop {
+	0%   { opacity: 0; transform: scale(0.7) translateY(-18px); }
+	80%  { opacity: 1; transform: scale(1.12) translateY(2px); }
+	100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeUpField {
+	0%   { opacity: 0; transform: translateY(24px); }
+	100% { opacity: 1; transform: translateY(0); }
+}
+/* Responsividade */
+@media (max-width: 600px) {
+	.identification-form {
+		min-width: 0;
+		padding: 1.3em 0.7em 1.1em 0.7em;
+		border-radius: 0.7em;
+		gap: 1.1em;
+	}
+	.form-header .icon-barber {
+		font-size: 1.5em;
+	}
+	.form-header h2 {
+		font-size: 1.1em;
+	}
+	.form-header .subtitle {
+		font-size: 0.95em;
+	}
+	.form-group {
+		gap: 0.5em;
+	}
+	.form-group input {
+		font-size: 1em;
+		padding: 0.6em 0.7em;
+	}
+	.submit-btn {
+		font-size: 1em;
+		padding: 0.6em 1em;
+	}
 }
 
 @keyframes fadeSlideIn {
