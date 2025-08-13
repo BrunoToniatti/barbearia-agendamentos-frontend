@@ -46,6 +46,11 @@ export class Finish implements OnInit {
     }
   }
 
+  formatDate(date: any): string {
+    let date_separete = date.split('-')
+    return `${date_separete[2]}/${date_separete[1]}/${date_separete[0]}`
+  }
+
   setRating(rating: number): void {
     this.rating = rating;
   }
