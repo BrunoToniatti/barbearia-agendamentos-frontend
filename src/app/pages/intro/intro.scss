@@ -1,0 +1,174 @@
+
+
+$bg-1: #181b20;
+$bg-2: #23262b;
+$accent: #bfa76a; // dourado discreto
+$accent2: #7a7a7a; // prata
+$white: #f3f4f6;
+$text: #e0e7ef;
+$masc1: #23262b;
+$masc2: #353942;
+$masc3: #4b4f58;
+
+
+.intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(120deg, $bg-2 0%, $bg-1 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 100vh;
+  animation: slideIn 1.2s cubic-bezier(.7,0,.3,1) forwards;
+
+
+  .glow {
+    position: absolute;
+    width: 180vmax;
+    height: 180vmax;
+    background: conic-gradient(from 90deg, $accent2 0deg 60deg, transparent 120deg 180deg, $accent 240deg 300deg, transparent 360deg);
+    filter: blur(80px) brightness(1.2);
+    opacity: 0.45;
+    animation: rotateGlow 7s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+
+  .logo-wrapper {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    max-width: 100vw;
+    gap: 1.2rem;
+  }
+
+  .logo {
+    position: relative;
+    text-align: center;
+    color: $masc2;
+    transform: scale(0.92) translateY(30px) rotateX(30deg);
+    opacity: 0;
+    animation: logoPop 1.1s 0.3s cubic-bezier(.2,.8,.2,1) forwards;
+
+
+    .line {
+      display: block;
+      height: 3px;
+      width: 0;
+      margin: 1.1rem auto;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, $accent2, $accent, transparent);
+      &.top { animation: drawLine 800ms 350ms cubic-bezier(.7,0,.3,1) forwards; }
+      &.bottom { animation: drawLine 800ms 1100ms cubic-bezier(.7,0,.3,1) forwards; }
+    }
+
+
+    .brand {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(48px, 10vw, 110px);
+      letter-spacing: .12em;
+      font-weight: 800;
+      margin: 0;
+      color: $masc3;
+      text-shadow: 0 2px 8px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.22);
+      filter: none;
+      background: none;
+
+      .j, .amp, .b {
+        display: inline-block;
+        opacity: 0;
+        transform: scale(0.7) translateY(40px) rotate(-10deg);
+        color: $masc3;
+        text-shadow: 0 2px 8px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.22);
+      }
+      .j { animation: letterPop 0.5s 0.5s cubic-bezier(.7,0,.3,1) forwards; }
+      .amp { animation: letterPop 0.5s 0.7s cubic-bezier(.7,0,.3,1) forwards; }
+      .b { animation: letterPop 0.5s 0.9s cubic-bezier(.7,0,.3,1) forwards; }
+    }
+
+    .subtitle {
+      margin: .3rem 0 0;
+      font-weight: 600;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      font-size: clamp(14px, 2.8vw, 20px);
+      color: $accent;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 700ms 1.2s cubic-bezier(.7,0,.3,1) forwards;
+      text-shadow: 0 1px 4px rgba(0,0,0,.18);
+    }
+  }
+
+
+  .hint {
+    display: none;
+  }
+
+  .skip-btn {
+    margin-top: 0.2em;
+    padding: 0.6em 1.6em;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: $bg-2;
+    background: linear-gradient(90deg, $accent2 60%, $accent 100%);
+    border: none;
+    border-radius: 2em;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.13);
+    cursor: pointer;
+    transition: transform 0.13s, box-shadow 0.13s, background 0.2s;
+    outline: none;
+    opacity: 0.96;
+    animation: pulseBtn 1.3s 2.2s infinite alternate;
+    pointer-events: auto;
+    user-select: none;
+    align-self: center;
+  }
+  .skip-btn:hover, .skip-btn:focus {
+    transform: scale(1.07);
+    box-shadow: 0 4px 18px 0 rgba(0,0,0,.18);
+    background: linear-gradient(90deg, $accent 40%, $accent2 100%);
+    opacity: 1;
+  }
+@keyframes handBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-8px) scale(1.08); }
+  60% { transform: translateY(2px) scale(0.98); }
+}
+
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 0 0 rgba(94,234,212,0.18); }
+  100% { box-shadow: 0 0 0 10px rgba(251,191,36,0.09); }
+}
+}
+
+
+/* Animações */
+@keyframes fadeIn { from {opacity:0} to {opacity:1} }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+@keyframes letterPop {
+  0%   { opacity: 0; transform: scale(0.7) translateY(40px) rotate(-10deg); }
+  60%  { opacity: 1; transform: scale(1.08) translateY(-4px) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) translateY(0) rotate(0); }
+}
+@keyframes drawLine { from { width: 0 } to { width: 240px } }
+@keyframes logoPop { to { opacity: 1; transform: scale(1) translateY(0) rotateX(0); } }
+@keyframes rotateGlow { to { transform: rotate(360deg); } }
+@keyframes breathe { 0%,100% { transform: translateX(-50%) translateY(0) } 50% { transform: translateX(-50%) translateY(-4px) } }
+
+@media (max-width: 600px) {
+  .intro .logo {
+    .brand { font-size: clamp(32px, 16vw, 60px); }
+    .subtitle { font-size: clamp(11px, 4vw, 14px); }
+  }
+  .intro .logo-wrapper { max-width: 98vw; }
+}
