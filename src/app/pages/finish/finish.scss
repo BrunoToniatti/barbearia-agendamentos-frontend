@@ -1,0 +1,370 @@
+$font-main: 'Montserrat', 'Poppins', 'Segoe UI', Arial, sans-serif;
+$bg-1: #181b20;
+$bg-2: #23262b;
+$accent: #bfa76a;
+$accent2: #7a7a7a;
+$masc1: #23262b;
+$masc2: #353942;
+$masc3: #4b4f58;
+$white: #f3f4f6;
+$success: #10b981;
+$warning: #f59e0b;
+
+.finish-container {
+  min-height: 100vh;
+  background: linear-gradient(120deg, $bg-2 0%, $bg-1 100%);
+  font-family: $font-main;
+  color: $white;
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.finish-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Success Animation */
+.success-animation {
+  margin-bottom: 2rem;
+  
+  .check-circle {
+    width: 100px;
+    height: 100px;
+    background: $success;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    animation: bounceIn 0.8s cubic-bezier(.7,0,.3,1);
+    box-shadow: 0 8px 32px rgba($success, 0.3);
+    
+    .check-icon {
+      width: 50px;
+      height: 50px;
+      color: $white;
+      stroke-width: 3;
+      animation: checkDraw 0.6s 0.3s ease-out forwards;
+      opacity: 0;
+    }
+  }
+}
+
+/* Success Message */
+.success-message {
+  margin-bottom: 3rem;
+  
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: $success;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    animation: fadeInUp 0.6s 0.2s ease-out both;
+  }
+  
+  .gratitude {
+    font-size: 1.2rem;
+    color: $accent2;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.6s 0.4s ease-out both;
+    
+    strong {
+      color: $accent;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Appointment Summary */
+.appointment-summary {
+  background: rgba($masc1, 0.9);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s 0.6s ease-out both;
+  
+  h3 {
+    color: $accent;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+}
+
+.detail-grid {
+  display: grid;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid $masc3;
+  
+  &:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    color: $accent;
+    font-size: 1.1rem;
+  }
+  
+  .label {
+    color: $accent2;
+    font-weight: 500;
+  }
+  
+  .value {
+    color: $white;
+    font-weight: 600;
+  }
+}
+
+/* Feedback Section */
+.feedback-section {
+  background: rgba($masc1, 0.9);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s 0.8s ease-out both;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  h3 {
+    color: $accent;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .feedback-subtitle {
+    color: $accent2;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+.rating-container {
+  margin-bottom: 1.5rem;
+  
+  .stars {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    
+    .star {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      filter: grayscale(100%);
+      opacity: 0.4;
+      
+      &:hover, &.hover {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      
+      &.active {
+        filter: grayscale(0%);
+        opacity: 1;
+        animation: starPop 0.3s cubic-bezier(.7,0,.3,1);
+      }
+    }
+  }
+  
+  .rating-text {
+    color: $accent;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+}
+
+.feedback-input {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  
+  label {
+    display: block;
+    color: $accent2;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: $masc2;
+    border: 2px solid $masc3;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    color: $white;
+    font-family: $font-main;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border 0.3s;
+    min-height: 120px;
+    max-height: 200px;
+    line-height: 1.5;
+    
+    &:focus {
+      outline: none;
+      border-color: $accent;
+      box-shadow: 0 0 0 3px rgba($accent, 0.2);
+    }
+    
+    &::placeholder {
+      color: $accent2;
+      opacity: 0.8;
+    }
+    
+    /* Previne overflow no container */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  
+  .char-count {
+    display: block;
+    text-align: right;
+    color: $accent2;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+}
+
+.feedback-btn {
+  background: $success;
+  color: $white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: $font-main;
+  
+  &:hover:not(:disabled) {
+    background: darken($success, 10%);
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeInUp 0.6s 1s ease-out both;
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: $font-main;
+  
+  &.secondary {
+    background: $masc3;
+    color: $white;
+    
+    &:hover {
+      background: $masc2;
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.primary {
+    background: $accent;
+    color: $masc1;
+    
+    &:hover {
+      background: lighten($accent, 10%);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes checkDraw {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes starPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .finish-container {
+    padding: 1rem;
+  }
+  
+  .appointment-summary, .feedback-section {
+    padding: 1rem;
+  }
+  
+  .rating-container .stars .star {
+    font-size: 1.5rem;
+  }
+}

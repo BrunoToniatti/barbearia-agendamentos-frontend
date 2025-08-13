@@ -14,7 +14,7 @@
 			<label for="name">Nome</label>
 			<input id="name" name="name" type="text" maxlength="40" placeholder="Seu nome" required [(ngModel)]="name" [class.filled]="name.length > 0">
 		</div>
-		<button type="submit" class="submit-btn animated" [disabled]="!name || phone.length < 14" style="animation-delay: 0.22s;">
+		<button type="submit" (click)="submit()" class="submit-btn animated" [disabled]="!name || phone.length < 14" style="animation-delay: 0.22s;">
 			<span>Avançar</span>
 			<svg class="arrow" width="22" height="22" viewBox="0 0 22 22"><path d="M7 11h8m0 0l-3.5-3.5M15 11l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
 		</button>

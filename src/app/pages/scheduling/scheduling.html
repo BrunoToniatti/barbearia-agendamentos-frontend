@@ -1,1 +1,260 @@
-<p>scheduling works!</p>
+<div class="scheduling-container">
+  <div class="scheduling-content">
+    <!-- Mobile: Wizard Steps -->
+    <div class="mobile-wizard">
+      <div class="wizard-header">
+        <div class="steps-indicator">
+          <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">1</div>
+          <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">2</div>
+          <div class="step" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">3</div>
+          <div class="step" [class.active]="currentStep >= 4" [class.completed]="currentStep > 4">4</div>
+          <div class="step" [class.active]="currentStep >= 5" [class.completed]="currentStep > 5">5</div>
+        </div>
+        <h2>{{ getStepTitle() }}</h2>
+      </div>
+
+      <!-- Step 1: Serviços -->
+      @if (currentStep === 1) {
+        <div class="wizard-step">
+          <div class="services-grid">
+            @for (service of services; track service.id) {
+              <div class="service-card"
+                   [class.selected]="selectedService?.id === service.id"
+                   (click)="selectService(service)">
+                <div class="service-icon">{{ service.icon }}</div>
+                <h3>{{ service.name }}</h3>
+                <p class="service-duration">{{ service.duration }} min</p>
+                <p class="service-price">R$ {{ service.price }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 2: Barbeiros -->
+      @if (currentStep === 2) {
+        <div class="wizard-step">
+          <div class="barbers-grid">
+            @for (barber of getAvailableBarbers(); track barber.id) {
+              <div class="barber-card"
+                   [class.selected]="selectedBarber?.id === barber.id"
+                   (click)="selectBarber(barber)">
+                <div class="barber-avatar">{{ barber.avatar }}</div>
+                <h3>{{ barber.name }}</h3>
+                <p class="barber-specialty">{{ barber.specialty }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 3: Data -->
+      @if (currentStep === 3) {
+        <div class="wizard-step">
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <button (click)="previousMonth()">&lt;</button>
+              <h3>{{ getMonthYear() }}</h3>
+              <button (click)="nextMonth()">&gt;</button>
+            </div>
+            <div class="calendar-grid">
+              @for (day of dayHeaders; track day) {
+                <div class="day-header">{{ day }}</div>
+              }
+              @for (day of calendarDays; track day.date) {
+                <div class="calendar-day"
+                     [class.available]="day.available"
+                     [class.selected]="selectedDate === day.date"
+                     [class.disabled]="!day.available"
+                     (click)="selectDate(day)">
+                  {{ day.day }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Step 4: Horários -->
+      @if (currentStep === 4) {
+        <div class="wizard-step">
+          <div class="times-grid">
+            @for (time of getAvailableTimes(); track time) {
+              <div class="time-slot"
+                   [class.selected]="selectedTime === time"
+                   (click)="selectTime(time)">
+                {{ time }}
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 5: Confirmação -->
+      @if (currentStep === 5) {
+        <div class="wizard-step">
+          <div class="confirmation-card">
+            <h3>Confirme seu agendamento</h3>
+            <div class="confirmation-details">
+              <div class="detail-item">
+                <strong>Serviço:</strong> {{ selectedService?.name }}
+              </div>
+              <div class="detail-item">
+                <strong>Barbeiro:</strong> {{ selectedBarber?.name }}
+              </div>
+              <div class="detail-item">
+                <strong>Data:</strong> {{ formatDate(selectedDate) }}
+              </div>
+              <div class="detail-item">
+                <strong>Horário:</strong> {{ selectedTime }}
+              </div>
+              <div class="detail-item">
+                <strong>Duração:</strong> {{ selectedService?.duration }} min
+              </div>
+              <div class="detail-item total">
+                <strong>Total: R$ {{ selectedService?.price }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Navigation Buttons -->
+      <div class="wizard-navigation">
+        @if (currentStep > 1) {
+          <button class="nav-btn secondary" (click)="previousStep()">Voltar</button>
+        }
+        @if (currentStep < 5) {
+          <button class="nav-btn primary"
+                  [disabled]="!canProceed()"
+                  (click)="nextStep()">
+            Próximo
+          </button>
+        }
+        @if (currentStep === 5) {
+          <button class="nav-btn confirm"
+                  (click)="confirmBooking()">
+            Confirmar Agendamento
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Desktop: Multi-column Layout -->
+    <div class="desktop-layout">
+      <!-- Column 1: Serviços -->
+      <div class="column services-column">
+        <h3>Escolha o Serviço</h3>
+        <div class="services-list">
+          @for (service of services; track service.id) {
+            <div class="service-card desktop"
+                 [class.selected]="selectedService?.id === service.id"
+                 (click)="selectService(service)">
+              <div class="service-icon">{{ service.icon }}</div>
+              <div class="service-info">
+                <h4>{{ service.name }}</h4>
+                <p>{{ service.duration }} min • R$ {{ service.price }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Column 2: Barbeiros -->
+      <div class="column barbers-column" [class.disabled]="!selectedService">
+        <h3>Escolha o Barbeiro</h3>
+        <div class="barbers-list">
+          @for (barber of getAvailableBarbers(); track barber.id) {
+            <div class="barber-card desktop"
+                 [class.selected]="selectedBarber?.id === barber.id"
+                 [class.disabled]="!selectedService"
+                 (click)="selectedService && selectBarber(barber)">
+              <div class="barber-avatar">{{ barber.avatar }}</div>
+              <div class="barber-info">
+                <h4>{{ barber.name }}</h4>
+                <p>{{ barber.specialty }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Column 3: Calendário -->
+      <div class="column calendar-column" [class.disabled]="!selectedBarber">
+        <h3>Escolha a Data</h3>
+        <div class="calendar-container desktop">
+          <div class="calendar-header">
+            <button (click)="previousMonth()" [disabled]="!selectedBarber">&lt;</button>
+            <h4>{{ getMonthYear() }}</h4>
+            <button (click)="nextMonth()" [disabled]="!selectedBarber">&gt;</button>
+          </div>
+          <div class="calendar-grid">
+            @for (day of dayHeaders; track day) {
+              <div class="day-header">{{ day }}</div>
+            }
+            @for (day of calendarDays; track day.date) {
+              <div class="calendar-day"
+                   [class.available]="day.available && selectedBarber"
+                   [class.selected]="selectedDate === day.date"
+                   [class.disabled]="!day.available || !selectedBarber"
+                   (click)="selectedBarber && selectDate(day)">
+                {{ day.day }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 4: Horários -->
+      <div class="column times-column" [class.disabled]="!selectedDate">
+        <h3>Escolha o Horário</h3>
+        <div class="times-list">
+          @for (time of getAvailableTimes(); track time) {
+            <div class="time-slot desktop"
+                 [class.selected]="selectedTime === time"
+                 [class.disabled]="!selectedDate"
+                 (click)="selectedDate && selectTime(time)">
+              {{ time }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Footer (Mobile) -->
+    @if (isMobile() && (selectedService || selectedBarber || selectedDate || selectedTime)) {
+      <div class="summary-footer">
+        <div class="summary-content">
+          <div class="summary-text">
+            @if (selectedService) {
+              <span>{{ selectedService.name }}</span>
+            }
+            @if (selectedBarber) {
+              <span> • {{ selectedBarber.name }}</span>
+            }
+            @if (selectedDate) {
+              <span> • {{ formatDate(selectedDate) }}</span>
+            }
+            @if (selectedTime) {
+              <span> • {{ selectedTime }}</span>
+            }
+          </div>
+          @if (selectedService) {
+            <div class="summary-price">
+              R$ {{ selectedService.price }}
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Confirmation Button (Desktop) -->
+    @if (!isMobile() && canConfirm()) {
+      <div class="desktop-confirmation">
+        <button class="confirm-btn" (click)="confirmBooking()">
+          Confirmar Agendamento
+        </button>
+      </div>
+    }
+  </div>
+</div>

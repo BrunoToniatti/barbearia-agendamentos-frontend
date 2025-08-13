@@ -1,6 +1,8 @@
 
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppointmentService } from '../../services/appointment.service';
 
 @Component({
   selector: 'app-identification',
@@ -11,6 +13,12 @@ import { FormsModule } from '@angular/forms';
 export class Identification {
   name = '';
   phone = '';
+
+  constructor(
+    private router: Router,
+    private appointmentService: AppointmentService
+  ) {}
+
 
   onPhoneInput(event: Event) {
     let value = (event.target as HTMLInputElement).value.replace(/\D/g, '');
@@ -25,5 +33,20 @@ export class Identification {
     }
     this.phone = value;
     (event.target as HTMLInputElement).value = value;
+  }
+
+  submit() {
+    if (this.name && this.phone.length >= 14) {
+      // Salvar dados do usuário no service
+      this.appointmentService.setUserData({
+        name: this.name,
+        phone: this.phone
+      });
+
+      console.log('Dados do usuário salvos:', { name: this.name, phone: this.phone });
+      this.router.navigate(['/agendamento']);
+    } else {
+      console.error('Form is invalid');
+    }
   }
 }
