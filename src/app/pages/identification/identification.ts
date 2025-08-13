@@ -32,8 +32,14 @@ export class Identification {
       }
     }
     this.phone = value;
+    if(this.phone == '(11) 91678-3636'){
+      this.name = 'Bruno Ferrari Toniatti'
+    }else if(this.phone == '(11) 94497-2508'){
+      this.name = 'João Pedro Moreira'
+    }
     (event.target as HTMLInputElement).value = value;
   }
+
 
   submit() {
     if (this.name && this.phone.length >= 14) {
@@ -42,7 +48,6 @@ export class Identification {
         name: this.name,
         phone: this.phone
       });
-
       console.log('Dados do usuário salvos:', { name: this.name, phone: this.phone });
       this.router.navigate(['/agendamento']);
     } else {

@@ -89,19 +89,18 @@
         </textarea>
         <span class="char-count">{{ feedbackText.length }}/500</span>
       </div>
-
       <!-- Submit Feedback -->
       <button
-        class="feedback-btn"
-        [disabled]="rating === 0"
-        (click)="submitFeedback()">
-        @if (feedbackSubmitted) {
-          <span>✓ Feedback enviado!</span>
-        } @else {
-          <span>Enviar Feedback</span>
-        }
-      </button>
-    </div>
+      class="feedback-btn"
+      [disabled]="rating === 0"
+      (click)="submitFeedback()">
+      @if (feedbackSubmitted) {
+        <span>✓ Feedback enviado!</span>
+      } @else {
+        <span>Enviar Feedback</span>
+      }
+    </button>
+  </div>
 
     <!-- Action Buttons -->
     <div class="action-buttons">
